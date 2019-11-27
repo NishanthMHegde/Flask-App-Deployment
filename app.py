@@ -17,9 +17,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #create table before every request is fired. This elminates the need to create tables all the time
 #This will automatically create table with fields specified in the model before first request is fired 
 
-@app.before_first_request
-def create_tables():
-	db.create_all()
+
 
 #add our app to our API
 api = Api(app)
@@ -46,4 +44,4 @@ api.add_resource(UserRegister, '/register')
 if __name__ == "__main__":
 	from db import db
 	db.init_app(app)
-	app.run(port=5002, debug=True)
+	app.run(port=5002)
