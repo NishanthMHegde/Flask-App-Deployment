@@ -1,3 +1,4 @@
+import os
 from flask import Flask
 from flask_restful import Resource,Api
 from flask_jwt import JWT
@@ -11,7 +12,11 @@ from resources.storelist import StoreList
 app = Flask(__name__)
 #create a secret key for app for encoding purpose
 app.secret_key = "nishanth"
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+#load the DATABASE_URL sent by Heroku Postgres and if not available, only then load sqlite db.
+#psycopg2 is needed for interaction between Heroku Postgresql and app.
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', 'sqlite:///data.db')
+#use below database uri only when using sqliteDB from SQLAlchemy
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #create table before every request is fired. This elminates the need to create tables all the time
